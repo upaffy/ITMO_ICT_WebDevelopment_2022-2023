@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Lab №2 - UpaffyWeb</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/color-brewer.min.css">
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">UpaffyWeb</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../lr1/" class="nav-link">Lab №1</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Lab №2</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../lr1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#-" class="nav-link">Веб-приложение для бронирования отелей</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#_1" class="nav-link">Модель</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#_2" class="nav-link">Формы</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#views" class="nav-link">View's</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#url" class="nav-link">Все URL паттерны</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="-">Веб-приложение для бронирования отелей</h1>
+<hr />
+<h2 id="_1">Модель</h2>
+<p><img alt="Model" src="/assets/HotelsModel.png" /></p>
+<p><em>models.py</em></p>
+<pre><code class="language-python">from django.db import models
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+
+
+User = get_user_model()
+
+
+class Owner(models.Model):
+    organization_name = models.CharField(max_length=50)
+    contact_phone = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.organization_name
+
+
+class Hotel(models.Model):
+    name = models.CharField(max_length=50)
+    address = models.CharField(max_length=100)
+    description = models.TextField()
+    owner = models.ForeignKey(Owner, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class RoomType(models.Model):
+    type = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.type
+
+
+class Facilities(models.Model):
+    pets_allowed = models.BooleanField(verbose_name=&quot;Разрешены домашние животные&quot;)
+    parking = models.BooleanField(verbose_name=&quot;Есть парковка при отеле&quot;)
+    restaurant = models.BooleanField(verbose_name=&quot;Есть ресторан при отеле&quot;)
+    free_wifi = models.BooleanField(verbose_name=&quot;В номере есть бесплатный WiFi&quot;)
+    spa = models.BooleanField(verbose_name=&quot;Есть спа-центр при отеле&quot;)
+    fitness_centre = models.BooleanField(verbose_name=&quot;Есть фитнесс-центр при отеле&quot;)
+    facilities_for_disabled = models.BooleanField(verbose_name=&quot;Номер подходит для людей с ограниченными возможностями&quot;)
+
+    def get_fields(self):
+        fields = []
+        for field in Facilities._meta.fields:
+            if field.name != &quot;id&quot;:
+                fields.append((field.verbose_name, getattr(self, field.name)))
+
+        return fields
+
+
+class Room(models.Model):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
+    capacity = models.IntegerField()
+    price = models.FloatField()
+    facilities = models.ForeignKey(Facilities, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.hotel.name + &quot; &quot; + self.name
+
+
+class Reservation(models.Model):
+    date_start = models.DateTimeField()
+    date_end = models.DateTimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.username + &quot; &quot; + self.room.name
+
+
+def validate_range(value):
+    if value &lt; 0 or value &gt; 10:
+        raise ValidationError(f&quot;{value} is outside the range 0...10&quot;)
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    reservation = models.ForeignKey(Reservation, on_delete=models.SET_NULL, null=True, blank=True)
+    body = models.TextField()
+    rating = models.IntegerField(validators=[validate_range], null=True, blank=True)
+    created = models.DateTimeField(auto_now=True)
+
+</code></pre>
+<hr />
+<h2 id="_2">Формы</h2>
+<h3 id="_3">Регистрации</h3>
+<p><em>forms.py</em></p>
+<pre><code class="language-python">class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'from-input'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'from-input'}))
+    password2 = forms.CharField(label='Повтор пароля', widget=forms.PasswordInput(attrs={'class': 'from-input'}))
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2')
+</code></pre>
+<h3 id="_4">Бронирования</h3>
+<p><em>forms.py</em></p>
+<pre><code class="language-python">class ReserveForm(forms.ModelForm):
+    date_start = forms.DateTimeField(label='Дата заезда', widget=forms.DateInput(attrs={'type': 'date'}))
+    date_end = forms.DateTimeField(label='Дата выезда', widget=forms.DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Reservation
+        fields = ('date_start', 'date_end')
+</code></pre>
+<h3 id="_5">Ввода комментария</h3>
+<p><em>forms.py</em></p>
+<pre><code class="language-python">class InputCommentForm(forms.ModelForm):
+    reservation = forms.ModelChoiceField(label='Период проживания', empty_label='Не выбрано', queryset=None, required=False)
+    rating = forms.IntegerField(label='Оценка', min_value=0, max_value=10)
+    body = forms.TextInput(attrs={'size': 10, 'title': None})
+
+    def __init__(self, user: tp.Optional[User], room: tp.Optional[Room], *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user and room:
+            self.fields['reservation'].queryset = Reservation.objects.filter(user=user).filter(room=room)
+
+    class Meta:
+        model = Comment
+        fields = ('reservation', 'rating', 'body')
+</code></pre>
+<hr />
+<h2 id="views">View's</h2>
+<p><em>views.py</em></p>
+<h3 id="_6">Страница регистрации</h3>
+<pre><code class="language-python">from django.urls import reverse_lazy
+from .forms import RegisterUserForm
+
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = &quot;register.html&quot;
+    success_url = reverse_lazy(&quot;login&quot;)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = &quot;Регистрация&quot;
+
+        return context
+</code></pre>
+<h3 id="_7">Страница авторизации</h3>
+<pre><code class="language-python">from django.contrib.auth.forms import AuthenticationForm
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = &quot;login.html&quot;
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = &quot;Авторизация&quot;
+
+        return context
+
+    def get_success_url(self):
+        next_page = self.request.GET.get(&quot;next&quot;, default=&quot;/&quot;)
+        return next_page
+</code></pre>
+<h3 id="_8">Выход из профиля</h3>
+<pre><code class="language-python">from django.contrib.auth import logout
+
+def logout_user(request):
+    logout(request)
+    return redirect('hotels')
+</code></pre>
+<h3 id="_9">Профиль</h3>
+<pre><code class="language-python">from .models import Reservation
+
+def profile(request):
+    reservations = Reservation.objects.filter(user=request.user)
+    return render(request, &quot;profile.html&quot;, {&quot;title&quot;: &quot;Профиль&quot;, &quot;reservations&quot;: reservations})
+</code></pre>
+<h3 id="_10">Список отелей</h3>
+<pre><code class="language-python">from .models import Hotel
+
+class HotelList(ListView):
+    model = Hotel
+    template_name = &quot;hotel_list.html&quot;
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = &quot;Hotels&quot;
+
+        return context
+</code></pre>
+<h3 id="_11">Информация об отеле</h3>
+<pre><code class="language-python">from .models import Hotel, Room
+
+class HotelInfo(DetailView):
+    model = Hotel
+    template_name = &quot;hotel_info.html&quot;
+    context_object_name = &quot;hotel&quot;
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = context['hotel'].name
+        context['rooms'] = Room.objects.filter(hotel=context['hotel'])
+
+        return context
+</code></pre>
+<h3 id="_12">Информация о номере</h3>
+<pre><code class="language-python">from django.shortcuts import get_object_or_404, render
+from .models import Comment, Room
+from .forms import InputCommentForm
+
+def room_info(request, pk):
+    room = get_object_or_404(Room, id=pk)
+    comments = Comment.objects.filter(room=room)
+
+    if request.method == &quot;POST&quot;:
+        form = InputCommentForm(request.user, room, request.POST)
+
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.room = room
+            form.save()
+
+            return redirect(&quot;room_info&quot;, pk=pk)
+    else:
+        if request.user.is_authenticated:
+            form = InputCommentForm(request.user, room)
+        else:
+            form = InputCommentForm(None, None)
+
+    return render(request, &quot;room_info.html&quot;, {&quot;title&quot;: room.name, &quot;room&quot;: room, &quot;comments&quot;: comments, &quot;form&quot;: form})
+</code></pre>
+<h3 id="_13">Класс, объединяющий методы для бронирования (создание, обновление, удаление)</h3>
+<pre><code class="language-python">from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Reservation
+from .forms import ReserveForm
+from datetime import datetime
+
+class ReservationView:
+    @staticmethod
+    def _is_dates_valid(date_start, date_end) -&gt; bool:
+        return (date_start &lt; date_end) and (date_start &gt; datetime.now(tz=pytz.UTC))
+
+    @staticmethod
+    def _is_dates_free(date_start, date_end, room_id, user_id) -&gt; bool:
+        reservations = Reservation.objects.filter(room=room_id).exclude(user=user_id)
+        for old_reservation in reservations:
+            if (old_reservation.date_start &lt; date_start &lt; old_reservation.date_end) or \
+                    (old_reservation.date_start &lt; date_end &lt; old_reservation.date_end):
+                return False
+
+        return True
+
+    @staticmethod
+    def _check_dates(request, room_id, user_id) -&gt; tp.Tuple[bool, str]:
+        date_start = datetime.strptime(request.POST['date_start'], '%Y-%m-%d').replace(tzinfo=pytz.UTC)
+        date_end = datetime.strptime(request.POST['date_end'], '%Y-%m-%d').replace(tzinfo=pytz.UTC)
+
+        if not ReservationView._is_dates_valid(date_start, date_end):
+            return False, 'Дата заезда должна быть позже сегодняшней и раньше даты выезда. Попробуйте заново'
+
+        if not ReservationView._is_dates_free(date_start, date_end, room_id, user_id):
+            return False, 'Выбранные даты заняты. Попробуйте другие'
+
+        return True, ''
+
+    @staticmethod
+    def reserve_room(request, pk):
+        room = get_object_or_404(Room, id=pk)
+        form = ReserveForm(request.POST or None)
+        if form.is_valid():
+            dates_check = ReservationView._check_dates(request, pk, request.user.id)
+
+            if not dates_check[0]:
+                messages.error(request, dates_check[1])
+                return redirect('reserve', pk=pk)
+
+            form = form.save(commit=False)
+            form.user = request.user
+            form.room = room
+            form.save()
+            return redirect('profile')
+
+        return render(request, &quot;reserve.html&quot;, {&quot;title&quot;: room.name, &quot;form&quot;: form})
+
+    @staticmethod
+    def update_reservation(request, pk):
+        reservation = get_object_or_404(Reservation, id=pk)
+        form = ReserveForm(request.POST or None, instance=reservation)
+
+        if not reservation.user == request.user:
+            return redirect(f'profile')
+
+        if form.is_valid():
+            dates_check = ReservationView._check_dates(request, reservation.room.id, request.user.id)
+            if not dates_check[0]:
+                messages.error(request, dates_check[1])
+                return redirect('update_reservation', pk=pk)
+
+            form.save()
+            return redirect('profile')
+
+        return render(request, &quot;update_reservation.html&quot;, {&quot;title&quot;: &quot;Изменить бронирование&quot;, &quot;form&quot;: form})
+
+    @staticmethod
+    def delete_reservation(request, pk):
+        reservation = Reservation.objects.get(id=pk)
+
+        if request.user.id != reservation.user.id:
+            return redirect('profile')
+
+        if request.method == 'POST':
+            reservation.delete()
+            return redirect('profile')
+
+        return render(request, 'delete_reservation.html', {'title': 'Отмена бронирования', 'reservation': reservation})
+</code></pre>
+<h3 id="_14">Таблица постояльцев</h3>
+<pre><code class="language-python">from django.shortcuts import render
+from .models import Reservation
+
+def guests_info(request):
+    reservations = Reservation.objects.filter(date_start__month__lte=datetime.now().month, date_end__month__gte=datetime.now().month)
+
+    hotels_guests: tp.Dict[Hotel, tp.Set[str]] = {}
+    for reservation in reservations:
+        if reservation.room.hotel in hotels_guests:
+            hotels_guests[reservation.room.hotel].add(reservation.user.username)
+        else:
+            hotels_guests[reservation.room.hotel] = {reservation.user.username}
+
+    return render(request, &quot;guests.html&quot;, {&quot;title&quot;: &quot;Постояльцы&quot;, &quot;hotels_guests&quot;: hotels_guests, &quot;month&quot;: datetime.now().strftime(&quot;%B&quot;)})
+
+</code></pre>
+<hr />
+<h2 id="url">Все URL паттерны</h2>
+<p><em>hotels_app/urls.py</em></p>
+<pre><code class="language-python">urlpatterns = [
+    path(&quot;&quot;, views.HotelList.as_view(), name=&quot;hotels&quot;),
+    path(&quot;hotel/&lt;int:pk&gt;&quot;, views.HotelInfo.as_view(), name=&quot;hotel_info&quot;),
+    path(&quot;room/&lt;int:pk&gt;&quot;, views.room_info, name=&quot;room_info&quot;),
+    path(&quot;room/&lt;int:pk&gt;/reserve&quot;, login_required(views.ReservationView.reserve_room, login_url=&quot;login&quot;), name=&quot;reserve&quot;),
+    path(&quot;reservation/&lt;int:pk&gt;/update&quot;,
+         login_required(views.ReservationView.update_reservation, login_url=&quot;login&quot;),
+         name=&quot;update_reservation&quot;),
+    path(&quot;reservation/&lt;int:pk&gt;/delete&quot;,
+         login_required(views.ReservationView.delete_reservation, login_url=&quot;login&quot;),
+         name=&quot;delete_reservation&quot;),
+    path(&quot;register/&quot;, views.RegisterUser.as_view(), name=&quot;register&quot;),
+    path(&quot;login/&quot;, views.LoginUser.as_view(), name=&quot;login&quot;),
+    path(&quot;logout/&quot;, views.logout_user, name=&quot;logout&quot;),
+    path(&quot;profile/&quot;, login_required(views.profile, login_url=&quot;login&quot;), name=&quot;profile&quot;),
+    path(&quot;guests/&quot;, views.guests_info, name=&quot;guests&quot;)
+]
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
