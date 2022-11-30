@@ -110,31 +110,31 @@
 <ul>
 <li>
 <p>Создание пяти новых автомобилей
-<img alt="Cars Creation" src="../../img/carsCreation.png" /></p>
+<img alt="Cars Creation" src="../img/carsCreation.png" /></p>
 </li>
 <li>
 <p>Создание экземпляров владельцев и ассоциативных сущностей для связи владельцев с машинами
-<img alt="Owners and Ownerships creation pt1" src="../../img/ownersAndOwnershipsCreationPt1.png" />
-<img alt="Owners and Ownerships creation pt2" src="../../img/ownersAndOwnershipsCreationPt2.png" /></p>
+<img alt="Owners and Ownerships creation pt1" src="../img/ownersAndOwnershipsCreationPt1.png" />
+<img alt="Owners and Ownerships creation pt2" src="../img/ownersAndOwnershipsCreationPt2.png" /></p>
 </li>
 <li>
 <p>Создание экземпляров прав для владельцев
-<img alt="License creation" src="../../img/licenseCreation.png" /></p>
+<img alt="License creation" src="../img/licenseCreation.png" /></p>
 </li>
 </ul>
 <h2 id="2">Задание 2</h2>
 <ul>
 <li>
 <p>Вывести все машины марки “Toyota”
-<img alt="Get all cars with Toyota make" src="../../img/getToyota.png" /></p>
+<img alt="Get all cars with Toyota make" src="../img/getToyota.png" /></p>
 </li>
 <li>
 <p>Найти всех водителей с именем “Павел”
-<img alt="Get all person with name Pavel" src="../../img/getPavels.png" /></p>
+<img alt="Get all person with name Pavel" src="../img/getPavels.png" /></p>
 </li>
 <li>
 <p>Взяв любого случайного владельца и получить экземпляр его удостоверения в виде объекта модели
-<img alt="Get person's from prev paragraph license" src="../../img/getLicense.png" /> 
+<img alt="Get person's from prev paragraph license" src="../img/getLicense.png" /> 
 Чтобы получить объект модели, необходимо использовать функцию <code>get()</code>, либо взять конкретный объект из <code>QuerySet</code>:</p>
 </li>
 </ul>
@@ -149,36 +149,36 @@ queryset[0]
 <li>
 <p>Вывести всех владельцев черных машин </p>
 <p><code>CarOwner.objects.filter(cars__color="black").distinct()</code></p>
-<p><img alt="Get all black cars owners" src="../../img/blackCarsOwners.png" /></p>
+<p><img alt="Get all black cars owners" src="../img/blackCarsOwners.png" /></p>
 </li>
 <li>
 <p>Найти всех владельцев, чей год владения машиной начинается с 2021
-<img alt="" src="../../img/startDateEqualTo2021.png" /></p>
+<img alt="" src="../img/startDateEqualTo2021.png" /></p>
 </li>
 </ul>
 <h2 id="3">Задание 3</h2>
 <ul>
 <li>
 <p>Вывести дату выдачи самого старшего водительского удостоверения
-<img alt="" src="../../img/oldestLicenseDate.png" /></p>
+<img alt="" src="../img/oldestLicenseDate.png" /></p>
 </li>
 <li>
 <p>Вывести самую позднюю дату владения машиной
-<img alt="" src="../../img/latestOwnershipDate.png" /></p>
+<img alt="" src="../img/latestOwnershipDate.png" /></p>
 </li>
 <li>
 <p>Вывести количество машин для каждого водителя
-<img alt="" src="../../img/carsCountForEveryDriver.png" /></p>
+<img alt="" src="../img/carsCountForEveryDriver.png" /></p>
 </li>
 <li>
 <p>Подсчитать количество машин каждой марки</p>
 <p><code>Car.objects.values("make").annotate(Count("id"))</code></p>
-<p><img alt="" src="../../img/carsCountForEveryMake.png" /></p>
+<p><img alt="" src="../img/carsCountForEveryMake.png" /></p>
 </li>
 <li>
 <p>Отсортировать всех автовладельцев по дате выдачи удостоверения</p>
 <p><code>CarOwner.objects.order_by("driverslicense__date_of_issue").distinct()</code></p>
-<p><img alt="" src="../../img/sortedOwners.png" /></p>
+<p><img alt="" src="../img/sortedOwners.png" /></p>
 </li>
 </ul></div>
             </div>
