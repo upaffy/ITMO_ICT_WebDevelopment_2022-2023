@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Lab №4 - UpaffyWeb</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/color-brewer.min.css">
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">UpaffyWeb</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href="../.." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../lr1/" class="nav-link">Lab №1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../lr2/" class="nav-link">Lab №2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../lr3/" class="nav-link">Lab №3</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Lab №4</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../lr3/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#4-vuejs" class="nav-link">Лабораторная работа 4. Реализация клиентской части криптобиржи средствами Vue.js.</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#router" class="nav-link">Router</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#components" class="nav-link">Components</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#views" class="nav-link">Views</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#layouts" class="nav-link">Layouts</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="4-vuejs">Лабораторная работа 4. Реализация клиентской части криптобиржи средствами Vue.js.</h1>
+<hr />
+<h2 id="router">Router</h2>
+<p><em>router/index.js</em></p>
+<pre><code>import {createRouter, createWebHistory} from 'vue-router'
+
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/',
+            name: 'welcome',
+            component: () =&gt; import('@/views/WelcomeView.vue'),
+            meta: {
+                layout: 'DefaultLayout'
+            }
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: () =&gt; import('@/views/LoginView.vue'),
+            meta: {
+                layout: 'AuthLayout'
+            }
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: () =&gt; import('@/views/RegisterView.vue'),
+            meta: {
+                layout: 'AuthLayout'
+            }
+        },
+        {
+            path: '/currency/:id',
+            name: 'currency',
+            component: () =&gt; import('@/views/CurrencyView.vue'),
+            meta: {
+                layout: 'DefaultLayout'
+            }
+        },
+        {
+            path: '/market',
+            name: 'market',
+            component: () =&gt; import('@/views/MarketView.vue'),
+            meta: {
+                layout: 'DefaultLayout'
+            }
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: () =&gt; import('@/views/ProfileView.vue'),
+            meta: {
+                layout: 'DefaultLayout'
+            }
+        },
+        {
+            path: '/change_password',
+            name: 'change_password',
+            component: () =&gt; import('@/views/ChangePasswordView.vue'),
+            meta: {
+                layout: 'AuthLayout'
+            }
+        }
+    ]
+})
+
+export default router
+</code></pre>
+<hr />
+<h2 id="components">Components</h2>
+<h3 id="buysellbuttonsblockvue-"><em>BuySellButtonsBlock.vue</em> - блок кнопок "купить" и "продать" для криптовалют</h3>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;d-grid gap-2&quot;&gt;
+    &lt;button type=&quot;button&quot; id=&quot;buy&quot; class=&quot;btn btn-outline-success btn-lg&quot; @click=&quot;buyButtonPressed&quot;&gt;Купить&lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;d-grid gap-2&quot;&gt;
+    &lt;button type=&quot;button&quot; id=&quot;sell&quot; class=&quot;btn btn-outline-danger btn-lg&quot; @click=&quot;sellButtonPressed&quot;&gt;Продать&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+
+const TransactionType = {S: 's', B: 'b'}
+const currencyCountForTransaction = 1
+
+export default {
+  name: &quot;BuySellButtonsBlock&quot;,
+  data() {
+    return {
+      ownership: &quot;&quot;
+    }
+  },
+  props: {
+    currency: null
+  },
+  created() {
+    if (Object.keys(this.currency).length !== 0) {
+      this.getOwnership()
+    } else {
+      const unwatch = this.$watch('currency', () =&gt; {
+        this.getOwnership()
+        unwatch()
+      })
+    }
+  },
+  methods: {
+    getOwnership() {
+      $.ajax({
+        url: `http://127.0.0.1:8000/ownerships/currency/${this.currency.id}`,
+        type: &quot;GET&quot;,
+        success: (response) =&gt; {
+          this.ownership = response
+        }
+      })
+    },
+
+    createOwnership(count) {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/ownerships/create/&quot;,
+        type: &quot;POST&quot;,
+        data: {
+          currency: this.currency.id,
+          count: count,
+        },
+        success: (response) =&gt; {
+          this.ownership = response
+          alert(`Покупка ${count} ${this.currency.abbreviation}`)
+        },
+        error: (response) =&gt; {
+          alert(Object.values(response.responseJSON)[0])
+        }
+      })
+    },
+
+    changeOwnership(count, type) {
+      let operation = &quot;&quot;
+      switch (type) {
+        case TransactionType.S:
+          operation = &quot;Продажа&quot;;
+          break;
+        default:
+          operation = &quot;Покупка&quot;
+      }
+
+      $.ajax({
+        url: `http://127.0.0.1:8000/ownerships/change_count/${this.ownership.id}/`,
+        type: &quot;PATCH&quot;,
+        data: {
+          count: count
+        },
+        success: () =&gt; {
+          this.getOwnership()
+          alert(`${operation} ${currencyCountForTransaction} ${this.currency.abbreviation}`)
+        },
+        error: (response) =&gt; {
+          alert(Object.values(response.responseJSON)[0])
+        }
+      })
+    },
+
+    createTransaction(type, count) {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/transactions/create/&quot;,
+        type: &quot;POST&quot;,
+        data: {
+          currency: this.currency.id,
+          transaction_type: type.toString(),
+          count: count,
+          transaction_amount: count
+        },
+        error: (response) =&gt; {
+          console.log(response)
+          alert(Object.values(response.responseJSON)[0])
+        }
+      })
+    },
+
+    buyButtonPressed() {
+      if (this.ownership) {
+        this.changeOwnership(this.ownership.count + currencyCountForTransaction)
+      } else {
+        this.createOwnership(currencyCountForTransaction)
+      }
+      this.createTransaction(TransactionType.B, currencyCountForTransaction)
+    },
+
+    sellButtonPressed() {
+      if (this.ownership) {
+        const remainder = this.ownership.count - currencyCountForTransaction
+        if (remainder &gt;= 0) {
+          this.createTransaction(TransactionType.S, currencyCountForTransaction)
+          this.changeOwnership(remainder, TransactionType.S)
+        } else {
+          alert(&quot;Вы пытаетесь продать валюты больше, чем у вас есть&quot;)
+        }
+      } else {
+        alert(&quot;Чтобы продать валюту, ее нужно сначала приобрести&quot;)
+      }
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="changepasswordformvue-post-"><em>ChangePasswordForm.vue</em> - POST-форма для смены пароля</h3>
+<pre><code>&lt;template&gt;
+  &lt;form method=&quot;post&quot; @submit.prevent=&quot;changePassword&quot;&gt;
+    &lt;div class=&quot;container pb-4&quot;&gt;
+      &lt;router-link class=&quot;logo-link&quot; to=&quot;/&quot;&gt;
+        &lt;img class=&quot;filter-logo&quot; src=&quot;@/assets/wallet2.svg&quot; alt=&quot;Wallet&quot; width=&quot;50&quot; height=&quot;50&quot;&gt;
+        &lt;p class=&quot;fs-3&quot;&gt;crypto wallet&lt;/p&gt;
+      &lt;/router-link&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-floating mb-2&quot;&gt;
+      &lt;input v-model=&quot;current_password&quot; type=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control&quot; id=&quot;current_password&quot;
+             placeholder=&quot;Password&quot; required&gt;
+      &lt;label for=&quot;current_password&quot;&gt;Старый пароль&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;hr/&gt;
+
+    &lt;div class=&quot;form-floating pb-1&quot;&gt;
+      &lt;input v-model=&quot;new_password&quot; type=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control&quot; id=&quot;new_password&quot;
+             placeholder=&quot;Password&quot; required&gt;
+      &lt;label for=&quot;new_password&quot;&gt;Новый пароль&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-floating pb-5&quot;&gt;
+      &lt;input v-model=&quot;re_new_password&quot; type=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control&quot; id=&quot;re_new_password&quot;
+             placeholder=&quot;Password&quot; required&gt;
+      &lt;label for=&quot;re_new_password&quot;&gt;Новый пароль еще раз&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;button class=&quot;w-100 btn btn-lg btn-main mb-3&quot; type=&quot;submit&quot;&gt;Сменить пароль&lt;/button&gt;
+
+    &lt;div&gt;
+      &lt;router-link to=&quot;/profile&quot; class=&quot;link-side&quot;&gt;Назад&lt;/router-link&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+
+export default {
+  name: &quot;ChangePasswordForm&quot;,
+  data() {
+    return {
+      current_password: &quot;&quot;,
+      new_password: &quot;&quot;,
+      re_new_password: &quot;&quot;
+    }
+  },
+  methods: {
+    changePassword() {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/auth/users/set_password/&quot;,
+        type: &quot;POST&quot;,
+        data: {
+          new_password: this.new_password,
+          re_new_password: this.re_new_password,
+          current_password: this.current_password
+        },
+        success: () =&gt; {
+          console.log(&quot;success&quot;)
+          alert(&quot;Ваш пароль успешно обновлен&quot;)
+          this.$router.push({name: &quot;profile&quot;})
+        },
+        error: (response) =&gt; {
+          console.log(response)
+          alert(Object.values(response.responseJSON)[0])
+          this.new_password = &quot;&quot;
+          this.re_new_password = &quot;&quot;
+          this.current_password = &quot;&quot;
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+
+</code></pre>
+<h3 id="currencieslistvue-"><em>CurrenciesList.vue</em> - список валют</h3>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;row row-cols-1 g-4&quot;&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div v-for=&quot;currency in currencies&quot; v-bind:key=&quot;currency&quot; class=&quot;card shadow-sm my-3&quot;&gt;
+        &lt;router-link :to=&quot;'/currency/' + currency.id&quot; class=&quot;btn btn-light card-bg-color text-left&quot;&gt;
+          &lt;div class=&quot;row d-flex align-items-center px-4&quot;&gt;
+
+            &lt;div class=&quot;col-5 col-sm-3 col-xl-1 col-lg-2 d-flex justify-content-center&quot;&gt;
+              &lt;img :src=&quot;currency.image&quot; style=&quot;max-height:100px; max-width:100px;&quot; class=&quot;img rounded-start&quot;
+                   alt=&quot;{{currency.name}}&quot;&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;col-7 col-sm-9 col-xl-11 col-lg-10&quot;&gt;
+              &lt;div class=&quot;card-body&quot;&gt;
+                &lt;h5 class=&quot;card-title card-main-color&quot;&gt;{{ currency.name }}&lt;/h5&gt;
+
+                &lt;div class=&quot;row row-cols-1 row-cols-lg-2 row-cols-xl-4 pb-3&quot;&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p class=&quot;card-main-color&quot;&gt;&lt;small class=&quot;card-muted-color&quot;&gt;1 {{ currency.abbreviation }}:&lt;/small&gt;
+                      ${{ parseFloat(currency.price) }}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p class=&quot;card-main-color&quot;&gt;&lt;small class=&quot;card-muted-color&quot;&gt;Всего в обращении:&lt;/small&gt;
+                      {{ formatNumber(currency.count, 2) }}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p :class=&quot;defineChangesColor(currency.daily_changes)&quot;&gt;&lt;small
+                        class=&quot;card-muted-color&quot;&gt;24 часа:&lt;/small&gt; {{ currency.daily_changes }}%&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p :class=&quot;defineChangesColor(currency.weekly_changes)&quot;&gt;&lt;small
+                        class=&quot;card-muted-color&quot;&gt;7 дней:&lt;/small&gt; {{ currency.weekly_changes }}%&lt;/p&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;p class=&quot;card-main-color&quot;&gt;&lt;small class=&quot;card-muted-color&quot;&gt;Date added:
+                  {{ formatDate(currency.date_added) }}&lt;/small&gt;&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/router-link&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;CurrenciesList&quot;,
+  props: {
+    currencies: Array
+  },
+  methods: {
+    defineChangesColor(changes) {
+      return changes &gt;= 0 ? &quot;card-success&quot; : &quot;card-danger&quot;
+    },
+    formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.getDate() + &quot;.&quot; + (date.getMonth() + 1) + &quot;.&quot; + date.getFullYear();
+    },
+    formatNumber(num, digits) {
+      const lookup = [
+        {value: 1, symbol: &quot;&quot;},
+        {value: 1e3, symbol: &quot;k&quot;},
+        {value: 1e6, symbol: &quot;M&quot;},
+        {value: 1e9, symbol: &quot;B&quot;},
+        {value: 1e12, symbol: &quot;T&quot;},
+        {value: 1e15, symbol: &quot;P&quot;},
+        {value: 1e18, symbol: &quot;E&quot;}
+      ];
+      const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+      const item = lookup.slice().reverse().find(function (item) {
+        return num &gt;= item.value;
+      });
+      return item ? (num / item.value).toFixed(digits).replace(rx, &quot;$1&quot;) + item.symbol : &quot;0&quot;;
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h3 id="currencychartvue-coinlibio"><em>CurrencyChart.vue</em> - график роста цены на валюту, загружаемый с coinlib.io</h3>
+<pre><code>&lt;template&gt;
+  &lt;div
+      style=&quot;height:560px; background-color: #FFFFFF; overflow:hidden; box-sizing: border-box; border: 1px solid rgb(94, 94, 94); border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; box-shadow: inset 0 -20px 0 0 rgb(94, 94, 94); padding:1px; margin: 0; width: 100%;&quot;&gt;
+    &lt;div style=&quot;height:540px; padding:0; margin:0; width: 100%;&quot; id=&quot;currency&quot;&gt;
+      &lt;iframe
+          :src=&quot;`https://widget.coinlib.io/widget?type=chart&amp;theme=light&amp;coin_id=${currency_coinlib_id}&amp;pref_coin_id=1505`&quot;
+          width=&quot;100%&quot;
+          height=&quot;536px&quot; border=&quot;0&quot; style=&quot;border:0; margin:0; padding:0; line-height:14px;&quot;&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+    &lt;div
+        style=&quot;color: #FFFFFF; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;&quot;&gt;
+      &lt;a href=&quot;https://coinlib.io&quot; target=&quot;_blank&quot;
+         style=&quot;font-weight: 500; color: #FFFFFF; text-decoration:none; font-size:11px&quot;&gt;
+        Cryptocurrency Prices
+      &lt;/a&gt;&amp;nbsp;by Coinlib
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;CurrencyChart&quot;,
+  props: {
+    currency_coinlib_id: 859
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="currencyfiltersblockvue-"><em>CurrencyFiltersBlock.vue</em> - блок фильтров для поска валют на ранке</h3>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;container pt-5&quot;&gt;
+    &lt;div class=&quot;input-group&quot;&gt;
+      &lt;form class=&quot;form-floating&quot; @submit.prevent=&quot;filterBySearchString&quot;&gt;
+        &lt;input v-model=&quot;searchString&quot; class=&quot;form-control&quot; type=&quot;search&quot; id=&quot;searchInput&quot;
+               placeholder=&quot;Поиск криптовалюты (название/символ)&quot;
+               aria-label=&quot;Search&quot;&gt;
+        &lt;label for=&quot;searchInput&quot;&gt;Поиск криптовалюты (название/символ)&lt;/label&gt;
+      &lt;/form&gt;
+      &lt;button class=&quot;btn btn-main&quot; type=&quot;submit&quot;&gt;Search&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;button class=&quot;btn btn-main mx-3 mt-3&quot; @click=&quot;sortByDateButtonPressed&quot;&gt;Сортировать по дате
+      {{ sortByDateButtonSign }}
+    &lt;/button&gt;
+    &lt;button class=&quot;btn btn-main mx-3 mt-3&quot; @click=&quot;sortByPriceButtonPressed&quot;&gt;Сортировать по цене
+      {{ sortByPriceButtonSign }}
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;CurrencyFiltersBlock&quot;,
+  data() {
+    return {
+      searchString: &quot;&quot;,
+      sortByDateDesc: false,
+      sortByPriceDesc: false,
+      sortByDateButtonSign: '',
+      sortByPriceButtonSign: '',
+      filterURL: &quot;&quot;
+    }
+  },
+  props: {
+    baseURL: String
+  },
+  created() {
+    if (this.baseURL) {
+      this.filterURL = this.baseURL
+    } else {
+      const unwatch = this.$watch('baseURL', () =&gt; {
+        this.filterURL = this.baseURL
+        unwatch()
+      })
+    }
+  },
+  watch: {
+    filterURL(newUrl) {
+      if (this.filterURL !== this.baseURL) {
+        this.$emit('response', newUrl)
+      }
+    }
+  },
+  methods: {
+    sortByDateButtonPressed() {
+      this.sortByDateDesc = !this.sortByDateDesc
+      this.sortByPriceButtonSign = ' '
+
+      if (this.sortByDateDesc) {
+        this.sortByDateButtonSign = '↑'
+        this.addSearchParam(&quot;ordering&quot;, &quot;date_added&quot;)
+      } else {
+        this.sortByDateButtonSign = '↓'
+        this.addSearchParam(&quot;ordering&quot;, &quot;-date_added&quot;)
+      }
+    },
+
+    filterBySearchString() {
+      this.addSearchParam(&quot;search&quot;, this.searchString)
+    },
+
+    sortByPriceButtonPressed() {
+      this.sortByPriceDesc = !this.sortByPriceDesc
+      this.sortByDateButtonSign = ' '
+
+      if (this.sortByPriceDesc) {
+        this.sortByPriceButtonSign = '↑'
+        this.addSearchParam(&quot;ordering&quot;, &quot;price&quot;)
+      } else {
+        this.sortByPriceButtonSign = '↓'
+        this.addSearchParam(&quot;ordering&quot;, &quot;-price&quot;)
+      }
+    },
+
+    addSearchParam(param, value) {
+      let newUrl = new URL(this.filterURL)
+      newUrl.searchParams.set(param, value)
+      this.filterURL = newUrl.toString()
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="footerblockvue-"><em>FooterBlock.vue</em> - футер</h3>
+<pre><code>&lt;template&gt;
+  &lt;footer class=&quot;bg-navbar&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;p class=&quot;col-md-4 mb-0 color-main py-3&quot;&gt;&amp;copy; 2022 Crypto Wallet, Inc&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/footer&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;FooterBlock&quot;
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h3 id="headernavbarvue-"><em>HeaderNavBar.vue</em> - хедер</h3>
+<pre><code>&lt;template&gt;
+  &lt;header class=&quot;p-3 border-bottom bg-navbar&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div class=&quot;d-flex flex-wrap align-items-baseline justify-content-center&quot;&gt;
+        &lt;router-link to=&quot;/&quot; class=&quot;navbar-logo&quot;&gt;
+          &lt;img class=&quot;filter-logo&quot; src=&quot;@/assets/wallet2.svg&quot; alt=&quot;Wallet&quot; width=&quot;32&quot; height=&quot;32&quot;&gt;
+          crypto wallet
+        &lt;/router-link&gt;
+
+        &lt;ul class=&quot;nav col-12 col-lg-auto me-lg-auto justify-content-center&quot;&gt;
+          &lt;li&gt;
+            &lt;router-link to=&quot;/market&quot; class=&quot;nav-link px-3 link-main&quot;&gt;Рынки&lt;/router-link&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;div v-if=&quot;isAuth&quot; class=&quot;btn-group&quot;&gt;
+          &lt;button @click=&quot;$router.push({name: 'profile'})&quot; type=&quot;button&quot; class=&quot;btn btn-main btn-md&quot;&gt;
+            Профиль
+          &lt;/button&gt;
+
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-md btn-main dropdown-toggle dropdown-toggle-split&quot;
+                  data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;
+            &lt;span class=&quot;visually-hidden&quot;&gt;Toggle Dropdown&lt;/span&gt;
+          &lt;/button&gt;
+
+          &lt;ul class=&quot;dropdown-menu dropdown-menu-dark&quot;&gt;
+            &lt;li&gt;
+              &lt;button @click=&quot;$router.push({name: 'profile'})&quot; class=&quot;dropdown-item&quot;&gt;Профиль&lt;/button&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;hr class=&quot;dropdown-divider&quot;&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+              &lt;button @click=&quot;logout&quot; class=&quot;dropdown-item&quot;&gt;Выйти&lt;/button&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+
+        &lt;div v-else class=&quot;btn-group&quot;&gt;
+          &lt;button @click=&quot;$router.push({name: 'register'})&quot; type=&quot;button&quot; class=&quot;btn btn-main btn-md&quot;&gt;
+            Профиль
+          &lt;/button&gt;
+
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-md btn-main dropdown-toggle dropdown-toggle-split&quot;
+                  data-bs-toggle=&quot;dropdown&quot; aria-expanded=&quot;false&quot;&gt;
+            &lt;span class=&quot;visually-hidden&quot;&gt;Toggle Dropdown&lt;/span&gt;
+          &lt;/button&gt;
+
+          &lt;ul class=&quot;dropdown-menu dropdown-menu-dark&quot;&gt;
+            &lt;li&gt;&lt;button @click=&quot;$router.push({name: 'login'})&quot; class=&quot;dropdown-item&quot;&gt;Войти&lt;/button&gt;&lt;/li&gt;
+            &lt;li&gt;
+              &lt;hr class=&quot;dropdown-divider&quot;&gt;
+            &lt;/li&gt;
+            &lt;li&gt;&lt;button @click=&quot;$router.push({name: 'register'})&quot; class=&quot;dropdown-item&quot;&gt;Зарегистрироваться&lt;/button&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+
+export default {
+  name: &quot;HeaderNavBar&quot;,
+  data() {
+    return {
+      isAuth: false
+    }
+  },
+  created() {
+    this.isAuth = !!localStorage.getItem(&quot;auth_token&quot;)
+  },
+  watch: {
+    $route() {
+      this.isAuth = !!localStorage.getItem(&quot;auth_token&quot;)
+    }
+  },
+  methods: {
+    logout() {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/auth/token/logout&quot;,
+        type: &quot;POST&quot;,
+        success: () =&gt; {
+          localStorage.setItem(&quot;auth_token&quot;, &quot;&quot;)
+          delete $.ajaxSettings.headers['Authorization']
+          this.isAuth = false,
+          this.$router.push({name: &quot;welcome&quot;})
+        },
+        error: (response) =&gt; {
+          alert(Object.values(response.responseJSON)[0])
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h3 id="loginformvue-"><em>LoginForm.vue</em> - форма для авторизации</h3>
+<pre><code>&lt;template&gt;
+  &lt;form method=&quot;post&quot; @submit.prevent=&quot;login&quot;&gt;
+    &lt;div class=&quot;container pb-4&quot;&gt;
+      &lt;router-link class=&quot;logo-link&quot; to=&quot;/&quot;&gt;
+        &lt;img class=&quot;filter-logo&quot; src=&quot;@/assets/wallet2.svg&quot; alt=&quot;Wallet&quot; width=&quot;50&quot; height=&quot;50&quot;&gt;
+        &lt;p class=&quot;fs-3&quot;&gt;crypto wallet&lt;/p&gt;
+      &lt;/router-link&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-floating mb-2&quot;&gt;
+      &lt;input v-model=&quot;username&quot; name=&quot;username&quot; class=&quot;form-control&quot; id=&quot;floatingInput&quot; placeholder=&quot;username&quot;&gt;
+      &lt;label for=&quot;floatingInput&quot;&gt;Username&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-floating pb-5&quot;&gt;
+      &lt;input v-model=&quot;password&quot; type=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control&quot; id=&quot;floatingPassword&quot; placeholder=&quot;Password&quot;&gt;
+      &lt;label for=&quot;floatingPassword&quot;&gt;Password&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;button class=&quot;w-100 btn btn-lg btn-main mb-3&quot; type=&quot;submit&quot;&gt;Sign in&lt;/button&gt;
+
+    Нет аккаунта? &lt;router-link to=&quot;/register&quot; class=&quot;link-side&quot;&gt;Зарегистрироваться&lt;/router-link&gt;
+  &lt;/form&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+
+export default {
+  name: &quot;LoginView&quot;,
+  data() {
+    return {
+      username: &quot;&quot;,
+      password: &quot;&quot;
+    }
+  },
+  methods: {
+    login() {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/auth/token/login&quot;,
+        type: &quot;POST&quot;,
+        data: {
+          username: this.username,
+          password: this.password
+        },
+        success: (response) =&gt; {
+          localStorage.setItem(&quot;auth_token&quot;, response.auth_token)
+          $.ajaxSetup({headers: {'Authorization': &quot;Token&quot; + &quot; &quot; + response.auth_token}})
+          this.$router.push({name: &quot;welcome&quot;})
+        },
+        error: (response) =&gt; {
+          alert(Object.values(response.responseJSON)[0])
+          this.password = &quot;&quot;
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;style&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h3 id="profileuserblockvue-"><em>ProfileUserBlock.vue</em> - блок с кнопками "выйти" и "сменить пароль" для пользователя</h3>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;container pt-5 pb-3 text-center&quot;&gt;
+    &lt;div class=&quot;row pb-3&quot;&gt;
+      &lt;div class=&quot;col&quot;&gt;
+        &lt;h1&gt;Профиль пользователя {{ user.username }}&lt;/h1&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+      &lt;div class=&quot;col-auto&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-secondary&quot; @click=&quot;this.$router.push({name: 'change_password'})&quot;&gt;Сменить
+          пароль
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;col-auto&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;btn btn-outline-danger&quot; @click=&quot;logout&quot;&gt;Выйти&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+
+export default {
+  name: &quot;ProfileUserBlock&quot;,
+  data() {
+    return {
+      user: {}
+    }
+  },
+  created() {
+    this.loadUser()
+  },
+  methods: {
+    loadUser() {
+      $.ajax({
+        url: 'http://127.0.0.1:8000/auth/users/me',
+        type: &quot;GET&quot;,
+        success: (response) =&gt; {
+          this.user = response
+        }
+      })
+    },
+    logout() {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/auth/token/logout&quot;,
+        type: &quot;POST&quot;,
+        success: () =&gt; {
+          localStorage.setItem(&quot;auth_token&quot;, &quot;&quot;)
+          delete $.ajaxSettings.headers['Authorization']
+          this.$router.push({name: &quot;welcome&quot;})
+        },
+        error: (response) =&gt; {
+          alert(Object.values(response.responseJSON)[0])
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="registerformvue-"><em>RegisterForm.vue</em> - форма для регистрации</h3>
+<pre><code>&lt;template&gt;
+  &lt;form method=&quot;post&quot; @submit.prevent=&quot;register&quot;&gt;
+    &lt;div class=&quot;container pb-4&quot;&gt;
+      &lt;router-link class=&quot;logo-link&quot; to=&quot;/&quot;&gt;
+        &lt;img class=&quot;filter-logo&quot; src=&quot;@/assets/wallet2.svg&quot; alt=&quot;Wallet&quot; width=&quot;50&quot; height=&quot;50&quot;&gt;
+        &lt;p class=&quot;fs-3&quot;&gt;crypto wallet&lt;/p&gt;
+      &lt;/router-link&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;input-group mb-2&quot;&gt;
+      &lt;span class=&quot;input-group-text bg-side text-light&quot;&gt;@&lt;/span&gt;
+      &lt;div class=&quot;form-floating&quot;&gt;
+        &lt;input v-model=&quot;username&quot; type=&quot;text&quot; name=&quot;username&quot; class=&quot;form-control&quot; id=&quot;floatingInputGroup1&quot; placeholder=&quot;Username&quot;&gt;
+        &lt;label for=&quot;floatingInputGroup1&quot;&gt;Username&lt;/label&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-floating mb-2&quot;&gt;
+      &lt;input v-model=&quot;email&quot; type=&quot;email&quot; name=&quot;email&quot; class=&quot;form-control&quot; id=&quot;floatingInput&quot; placeholder=&quot;name@example.com&quot;&gt;
+      &lt;label for=&quot;floatingInput&quot;&gt;Email address&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;form-floating pb-5&quot;&gt;
+      &lt;input v-model=&quot;password&quot; type=&quot;password&quot; name=&quot;password&quot; class=&quot;form-control&quot; id=&quot;floatingPassword&quot; placeholder=&quot;Password&quot;&gt;
+      &lt;label for=&quot;floatingPassword&quot;&gt;Password&lt;/label&gt;
+    &lt;/div&gt;
+
+    &lt;button class=&quot;w-100 btn btn-lg btn-main mb-3&quot; type=&quot;submit&quot;&gt;Зарегистрироваться&lt;/button&gt;
+
+    Уже есть аккаунт? &lt;router-link to=&quot;/login&quot; href=&quot;signin.html&quot; class=&quot;link-side&quot;&gt;Войти&lt;/router-link&gt;
+  &lt;/form&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;;
+
+export default {
+  name: &quot;RegisterForm&quot;,
+  data() {
+    return {
+      username: &quot;&quot;,
+      email: &quot;&quot;,
+      password: &quot;&quot;
+    }
+  },
+  methods: {
+    register() {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/auth/users/&quot;,
+        type: &quot;POST&quot;,
+        data: {
+          username: this.username,
+          email: this.email,
+          password: this.password
+        },
+        success: () =&gt; {
+          alert(&quot;Вы успешно зарегистрировались!&quot;)
+          this.$router.push({name: &quot;login&quot;})
+        },
+        error: (response) =&gt; {
+          alert(Object.values(response.responseJSON)[0])
+          this.password = &quot;&quot;
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;style&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h3 id="usercurrencieslistvue-"><em>UserCurrenciesList.vue</em> - список пользовательских валют</h3>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;row row-cols-1 g-4&quot;&gt;
+    &lt;div class=&quot;col&quot;&gt;
+      &lt;div v-for=&quot;ownership in ownerships&quot; v-bind:key=&quot;ownership&quot; class=&quot;card shadow-sm my-3&quot;&gt;
+        &lt;router-link :to=&quot;'/currency/' + ownership.currency.id&quot; class=&quot;btn btn-light card-bg-color text-left&quot;&gt;
+          &lt;div class=&quot;row d-flex align-items-center px-4&quot;&gt;
+
+            &lt;div class=&quot;col-5 col-sm-3 col-xl-1 col-lg-2 d-flex justify-content-center&quot;&gt;
+              &lt;img :src=&quot;ownership.currency.image&quot; style=&quot;max-height:100px; max-width:100px;&quot; class=&quot;img rounded-start&quot;
+                   alt=&quot;{{ownership.currency.name}}&quot;&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;col-7 col-sm-9 col-xl-11 col-lg-10&quot;&gt;
+              &lt;div class=&quot;card-body&quot;&gt;
+                &lt;h5 class=&quot;card-title card-main-color&quot;&gt;{{ ownership.currency.name }}&lt;/h5&gt;
+
+                &lt;div class=&quot;row row-cols-1 row-cols-lg-2 row-cols-xl-4 pb-3&quot;&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p class=&quot;card-main-color&quot;&gt;&lt;small class=&quot;card-muted-color&quot;&gt;1 {{
+                        ownership.currency.abbreviation
+                      }}:&lt;/small&gt;
+                      ${{ parseFloat(ownership.currency.price) }}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p class=&quot;card-main-color&quot;&gt;&lt;small class=&quot;card-muted-color&quot;&gt;Всего в портфеле:&lt;/small&gt;
+                      {{ ownership.count }}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;col&quot;&gt;
+                    &lt;p class=&quot;card-main-color&quot;&gt;&lt;small
+                        class=&quot;card-muted-color&quot;&gt;Цена в портфеле:&lt;/small&gt;
+                      ${{ parseFloat(ownership.currency.price * ownership.count) }}&lt;/p&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/router-link&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;UserCurrenciesList&quot;,
+  props: {
+    ownerships: Array
+  },
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="welcomesectionvue-"><em>WelcomeSection.vue</em> - секция с краткой инструкцией по использованию сайта</h3>
+<pre><code>&lt;template&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;div class=&quot;row d-flex align-items-center&quot;&gt;
+        &lt;div class=&quot;col-12 col-lg-6&quot;&gt;
+          &lt;div class=&quot;menu-image h-100 d-flex align-items-start&quot;&gt;
+            &lt;img src=&quot;@/assets/crypto-currency-isometric-design.png&quot; class=&quot;img-fluid&quot; alt=&quot;menu image&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;col-12 col-lg-6&quot;&gt;
+          &lt;div class=&quot;menu-text flex-grow-1 py-2 px-5&quot;&gt;
+            &lt;div class=&quot;py-4&quot;&gt;
+              &lt;h2 class=&quot;text-left&quot;&gt;Создайте свой криптопортфель&lt;/h2&gt;
+              &lt;p class=&quot;fw-lighter fs-4&quot;&gt;За три простых шага&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;menu-content&quot;&gt;
+              &lt;h3 class=&quot;h3-text-color py-2&quot;&gt;1. Пополните кошелек&lt;/h3&gt;
+              &lt;p class=&quot;fw-lighter&quot;&gt;Пополните свой криптовалютный кошелек и начните торговать криптовалютой. Вы можете
+                пополнить кошелек различными способами.&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;menu-content&quot;&gt;
+              &lt;h3 class=&quot;h3-text-color py-2&quot;&gt;2. Пройдите верификацию&lt;/h3&gt;
+              &lt;p class=&quot;fw-lighter&quot;&gt;Пройдите верификацию личности, чтобы защитить свой аккаунт и транзакции.&lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;menu-content&quot;&gt;
+              &lt;h3 class=&quot;h3-text-color py-2&quot;&gt;3. Начинайте&lt;/h3&gt;
+              &lt;p class=&quot;fw-lighter&quot;&gt;Все готово! Покупайте/продавайте криптовалюту, настраивайте регулярные покупки для
+                инвестиций.&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;button @click=&quot;checkAuthForStart&quot; type=&quot;button&quot; class=&quot;btn btn-lg btn-main my-5 mx-5&quot;&gt;
+            Начать!
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;WelcomeSection&quot;,
+  methods: {
+    checkAuthForStart() {
+      if (localStorage.getItem(&quot;auth_token&quot;)) {
+        this.$router.push({name: &quot;market&quot;})
+      } else {
+        this.$router.push({name: &quot;login&quot;})
+      }
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+
+&lt;/style&gt;
+</code></pre>
+<h2 id="views">Views</h2>
+<h3 id="changepasswordviewvue-"><em>ChangePasswordView.vue</em> - представление для смены пароля</h3>
+<pre><code>&lt;template&gt;
+  &lt;ChangePasswordForm/&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import ChangePasswordForm from &quot;../components/ChangePasswordForm.vue&quot;;
+export default {
+  name: &quot;ChangePasswordView&quot;,
+  components: {
+    ChangePasswordForm
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="currencyviewvue-"><em>CurrencyView.vue</em> - представление для просмотра информации о валюте и выполения транзакций</h3>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;container py-5&quot;&gt;
+    &lt;div class=&quot;row row-cols-2&quot;&gt;
+      &lt;div class=&quot;col-12 pb-3&quot;&gt;
+        &lt;CurrencyChart :currency_coinlib_id=&quot;currency.coinlib_id&quot;/&gt;
+      &lt;/div&gt;
+      &lt;BuySellButtonsBlock :currency=&quot;currency&quot; v-if=&quot;currency&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+import CurrencyChart from &quot;../components/CurrencyChart.vue&quot;;
+import BuySellButtonsBlock from &quot;../components/BuySellButtonsBlock.vue&quot;;
+export default {
+  name: &quot;CurrencyView&quot;,
+  data() {
+    return {
+      currency: {}
+    }
+  },
+  created() {
+    this.loadCurrency(this.$route.params.id)
+  },
+  methods: {
+    loadCurrency(id) {
+      $.ajax({
+        url: `http://127.0.0.1:8000/currencies/${id}/`,
+        type: &quot;GET&quot;,
+        success: (response) =&gt; {
+          this.currency = response
+        }
+      })
+    }
+  },
+  components: {
+    CurrencyChart,
+    BuySellButtonsBlock
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="loginviewvue-"><em>LoginView.vue</em> - представление для авторизации</h3>
+<pre><code>&lt;template&gt;
+  &lt;LoginForm/&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import LoginForm from &quot;../components/LoginForm.vue&quot;;
+export default {
+  name: &quot;LoginView&quot;,
+  components: {
+    LoginForm
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="marketviewvue-"><em>MarketView.vue</em> - представление для просмотра рынка валюты</h3>
+<pre><code>&lt;template&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;container pt-5 pb-3&quot;&gt;
+      &lt;h1&gt;
+        Рынок криптовалюты
+      &lt;/h1&gt;
+    &lt;/div&gt;
+
+    &lt;hr class=&quot;featurette-divider&quot;&gt;
+
+    &lt;CurrencyFiltersBlock :baseURL=&quot;baseURL&quot; @response=&quot;(loadURL) =&gt; loadCurrencies(loadURL)&quot; /&gt;
+
+    &lt;div class=&quot;container py-5&quot;&gt;
+      &lt;CurrenciesList :currencies=&quot;currencies&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+import CurrenciesList from &quot;../components/CurrenciesList.vue&quot;;
+import CurrencyFiltersBlock from &quot;../components/CurrencyFiltersBlock.vue&quot;;
+export default {
+  name: &quot;MarketView&quot;,
+  data() {
+    return {
+      currencies: [],
+      baseURL: 'http://127.0.0.1:8000/currencies/'
+    }
+  },
+  created() {
+    this.loadCurrencies(this.baseURL)
+  },
+  methods: {
+    loadCurrencies(url) {
+      $.ajax({
+        url: url,
+        type: &quot;GET&quot;,
+        success: (response) =&gt; {
+          this.currencies = response
+        }
+      })
+    }
+  },
+  components: {
+    CurrenciesList,
+    CurrencyFiltersBlock
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="profileviewvue-"><em>ProfileView.vue</em> - представление-профиль пользователя</h3>
+<pre><code>&lt;template&gt;
+  &lt;ProfileUserBlock/&gt;
+
+  &lt;hr class=&quot;featurette-divider&quot;&gt;
+
+  &lt;div class=&quot;container py-3&quot;&gt;
+    &lt;div class=&quot;row row-cols-1 g-4&quot;&gt;
+      &lt;UserCurrenciesList :ownerships=&quot;ownerships&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+import UserCurrenciesList from &quot;../components/UserCurrenciesList.vue&quot;;
+import ProfileUserBlock from &quot;../components/ProfileUserBlock.vue&quot;;
+export default {
+  name: &quot;ProfileView&quot;,
+  components: {
+    UserCurrenciesList,
+    ProfileUserBlock
+  },
+  data() {
+    return {
+      ownerships: []
+    }
+  },
+  created() {
+    this.loadOwnerships()
+  },
+  methods: {
+    loadOwnerships() {
+      $.ajax({
+        url: 'http://127.0.0.1:8000/ownerships',
+        type: &quot;GET&quot;,
+        success: (response) =&gt; {
+          this.ownerships = response
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="registerviewvue-"><em>RegisterView.vue</em> - представление для регистрации</h3>
+<pre><code>&lt;template&gt;
+  &lt;RegisterForm/&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import RegisterForm from &quot;../components/RegisterForm.vue&quot;;
+export default {
+  name: &quot;RegisterView&quot;,
+  components: {
+    RegisterForm
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="welcomeviewvue-"><em>WelcomeView.vue</em> - представление - начальный экран</h3>
+<pre><code>&lt;template&gt;
+  &lt;WelcomeSection/&gt;
+  &lt;section&gt;
+    &lt;div class=&quot;container py-5&quot;&gt;
+      &lt;div class=&quot;d-flex justify-content-center pb-5&quot;&gt;
+        &lt;h2&gt;Купить криптовалюту&lt;/h2&gt;
+      &lt;/div&gt;
+
+      &lt;CurrenciesList :currencies=&quot;currencies&quot;/&gt;
+
+      &lt;div class=&quot;d-flex justify-content-center pt-4&quot;&gt;
+        &lt;div tabindex=&quot;0&quot;&gt;
+          &lt;router-link to=&quot;/market&quot; class=&quot;link-side&quot;&gt;
+            Посмотреть больше
+          &lt;/router-link&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import $ from &quot;jquery&quot;
+import WelcomeSection from &quot;../components/WelcomeSection.vue&quot;;
+import CurrenciesList from &quot;../components/CurrenciesList.vue&quot;;
+export default {
+  name: &quot;WelcomeView&quot;,
+  components: {
+    WelcomeSection,
+    CurrenciesList
+  },
+  data() {
+    return {
+      currencies: []
+    }
+  },
+  created() {
+    this.loadPopularCurrencies()
+  },
+  methods: {
+    loadPopularCurrencies() {
+      $.ajax({
+        url: &quot;http://127.0.0.1:8000/currencies/popular/&quot;,
+        type: &quot;GET&quot;,
+        success: (response) =&gt; {
+          this.currencies = response
+        }
+      })
+    }
+  }
+}
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+&lt;/style&gt;
+</code></pre>
+<h2 id="layouts">Layouts</h2>
+<p>В приложении два лэйаута:</p>
+<ul>
+<li>Базовый
+<em>DefaultLayout.vue</em></li>
+</ul>
+<pre><code>&lt;template&gt;
+  &lt;HeaderNavBar/&gt;
+  &lt;main class=&quot;min-vh-100&quot;&gt;
+    &lt;slot/&gt;
+  &lt;/main&gt;
+  &lt;FooterBlock/&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import HeaderNavBar from &quot;../components/HeaderNavBar.vue&quot;;
+import FooterBlock from &quot;../components/FooterBlock.vue&quot;;
+export default {
+  name: &quot;DefaultLayout&quot;,
+  components: {
+    HeaderNavBar,
+    FooterBlock
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<ul>
+<li>Лэйаут для форм
+<em>AuthLayout.vue</em></li>
+</ul>
+<pre><code>&lt;template&gt;
+  &lt;main class=&quot;text-center sign-body&quot;&gt;
+    &lt;div class=&quot;sign-form w-100 m-auto&quot;&gt;
+      &lt;slot/&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &quot;AuthLayout&quot;
+}
+&lt;/script&gt;
+</code></pre>
+<p>А также есть конфигурационный файл, который выбирает Layout в зависимости от меты представления
+<em>AppLayout.vue</em></p>
+<pre><code>&lt;template&gt;
+  &lt;component :is=&quot;layout&quot;&gt;
+    &lt;slot /&gt;
+  &lt;/component&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import DefaultLayout from &quot;./DefaultLayout.vue&quot;;
+import {shallowRef, watch} from 'vue'
+import { useRoute } from 'vue-router'
+export default {
+  name: 'AppLayout',
+  setup() {
+    const layout = shallowRef(DefaultLayout)
+    const route = useRoute()
+    watch(
+      () =&gt; route.meta,
+      async meta =&gt; {
+        try {
+          const component = await import(`../layouts/${meta.layout}.vue`)
+          layout.value = component?.default || DefaultLayout
+        } catch (e) {
+          layout.value = DefaultLayout
+        }
+      },
+      { immediate: true }
+    )
+    return { layout }
+  }
+}
+&lt;/script&gt;
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+        <script src="../../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
